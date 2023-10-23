@@ -1,0 +1,25 @@
+paths:
+  dataset_folder_path: /satassdscratch/scml-shared/calvin_data/task_D_D/training
+  stats_file_path: /satassdscratch/scml-shared/calvin_data/task_D_D/stats.npz
+  processed_dataste_path: /satassdscratch/scml-shared/calvin_data/task_D_D/samples.npz
+  model_weights_path: /satassdscratch/scml-shared/calvin_data/task_D_D/ema_noise_pred_net.pth
+
+params:
+  pred_horizon: 16
+  obs_horizon: 2
+  action_horizon: 8
+  obs_dim: 39
+  action_dim: 7
+  num_diffusion_iters: 100
+
+train:
+  batch_size: 256
+  num_epochs: 311
+  save_interval: 10
+  lr: 1e-4
+  wandb: True
+  project_name: MLLS_diffplay
+  load_shared_data: True
+  weight_decay: 1e-6
+  ema_power: 0.75
+  warmup_steps: 500

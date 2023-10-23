@@ -1,0 +1,20 @@
+name: diff_env  # Change 'diff_env' to your desired environment name
+channels:
+  - defaults
+  - pytorch
+dependencies:
+  - python=3.8  # Choose your preferred Python version
+  - pip
+  - pip:
+    - setuptools==65.5.0
+    - pip==22
+    - wandb
+    - numpy  # You can specify additional dependencies here if needed
+    - zarr==2.12.0
+    - numcodecs==0.10.2
+    - torch==1.13.1
+    - torchvision==0.14.1
+    - diffusers==0.11.1
+    - omegaconf==2.1.2
+    - pyhash==0.9.3
+    - hydra-core==1.0.5
