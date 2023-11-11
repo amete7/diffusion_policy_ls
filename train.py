@@ -18,15 +18,18 @@ def main(cfg):
     if cfg.train.wandb:
         wandb.init(
             project=cfg.train.project_name,
-            name='task_D_calvin_low_dim_check',
+            name='task_D_calvin_low_dim_withGoals',
         )
-    device = torch.device('cuda')
+    # device = torch.device('cuda')
+    device = torch.device('cpu')
 
     dataset_folder_path = cfg.paths.dataset_folder_path
     stats_file_path = cfg.paths.stats_file_path
     processed_dataste_path = cfg.paths.processed_dataste_path
+    goal_filepath = cfg.paths.goal_filepath
 
     # parameters
+    planning_horizon = cfg.params.planning_horizon
     pred_horizon = cfg.params.pred_horizon
     obs_horizon = cfg.params.obs_horizon
     action_horizon = cfg.params.action_horizon
@@ -42,7 +45,8 @@ def main(cfg):
     #|p|p|p|p|p|p|p|p|p|p|p|p|p|p|p|p| actions predicted: 16
     if load_shared_data:
         data_dict = np.load(processed_dataste_path,allow_pickle=True)
-        custom_dataset = CustomDataset_Shared(data_dict, pred_horizon=pred_horizon, obs_horizon=obs_horizon)
+        goals = np.load(goal_filepath)
+        custom_dataset = CustomDataset_Shared(data_dict, goals, pred_horizon=pred_horizon, obs_horizon=obs_horizon)
     else:
         dataset = init_dataset(dataset_folder_path,pred_horizon)
 

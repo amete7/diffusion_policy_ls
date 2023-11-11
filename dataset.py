@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 from torch.utils.data import Dataset
 import numpy as np
 from pathlib import Path
@@ -88,19 +89,51 @@ class CustomDataset(Dataset):
         return {'obs': obs_sequence, 'action': action_sequence}
     
 class CustomDataset_Shared(Dataset):
-    def __init__(self, dataset_dict, pred_horizon=16, obs_horizon=2):
+    def __init__(self, dataset_dict, goals, pred_horizon=16, obs_horizon=2, isRelative = False):
         data_dict = dataset_dict
         self.obs = torch.from_numpy(data_dict['obs'])
         self.action = torch.from_numpy(data_dict['action'])
         self.pred_horizon = pred_horizon
         self.obs_horizon = obs_horizon
         self.length = len(self.obs) - pred_horizon + 1
+        self.goals = torch.from_numpy(goals['data'])
+        self.action_dim = len(self.action[0])
+        self.isRelative = isRelative
 
     def __len__(self):
         return self.length
 
-    def __getitem__(self, idx):
-        obs_sequence = self.obs[idx:idx + self.obs_horizon]
-        action_sequence = self.action[idx:idx + self.pred_horizon]
+    def find_nearest_idx(self, arr, target_idx):
+        greater_indices = np.where(arr > target_idx)[0]  
+        if len(greater_indices) == 0:
+            # Last idx
+            return arr[-1]
+        return arr[greater_indices[0]]
 
-        return {'obs': obs_sequence, 'action': action_sequence}
+    def __getitem__(self, idx):
+        # print("Idx: ", idx)
+        obs_sequence = self.obs[idx:idx + self.obs_horizon]
+        # print("Obs_start, end: ", len(obs_sequence))
+        action_sequence = self.action[idx:idx + self.pred_horizon]
+        # Given current idx and 400 idx chunk
+        goal_idx = self.find_nearest_idx(self.goals, idx)
+        goal = self.obs[goal_idx]
+        # print("Goal Idx: ", goal_idx)
+        if  (goal_idx - idx) < self.pred_horizon:
+            action_sequence = torch.zeros((self.pred_horizon, self.action_dim))
+            action_sequence[: (goal_idx - idx)] = self.action[idx: goal_idx]
+            if not self.isRelative:
+                start = goal_idx - idx 
+                pad_size = self.pred_horizon - (goal_idx - idx)
+                for i in range(start, start + pad_size):
+                    action_sequence[i, :] =  self.action[goal_idx-1]
+                    
+        print("action_start, goal_idx, end: ", idx, goal_idx, len(action_sequence))
+        return {'obs': obs_sequence, 'action': action_sequence, 'goal': goal}
+
+    # def __getitem__(self, idx):
+    #     obs_sequence = self.obs[idx:idx + self.obs_horizon]
+    #     action_sequence = self.action[idx:idx + self.pred_horizon]
+    #     print("action_start, end: ", idx, len(action_sequence))
+    #     return {'obs': obs_sequence, 'action': action_sequence}
+    
