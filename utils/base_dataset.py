@@ -12,11 +12,11 @@ from utils.episode_utils import (
 )
 import numpy as np
 from omegaconf import DictConfig
-import pyhash
+# import pyhash
 import torch
 from torch.utils.data import Dataset
 
-hasher = pyhash.fnv1_32()
+# hasher = pyhash.fnv1_32()
 logger = logging.getLogger(__name__)
 
 
@@ -33,7 +33,7 @@ def get_validation_window_size(idx: int, min_window_size: int, max_window_size: 
         Window size computed with hash function.
     """
     window_range = max_window_size - min_window_size + 1
-    return min_window_size + hasher(str(idx)) % window_range
+    return min_window_size #+ hasher(str(idx)) % window_range
 
 
 class BaseDataset(Dataset):

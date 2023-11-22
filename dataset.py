@@ -117,8 +117,10 @@ class CustomDataset_Shared(Dataset):
         action_sequence = self.action[idx:idx + self.pred_horizon]
         # Given current idx and 400 idx chunk
         goal_idx = self.find_nearest_idx(self.goals, idx)
-        goal = self.obs[goal_idx]
-        # print("Goal Idx: ", goal_idx)
+        goal_ = self.obs[goal_idx]        
+        goal = np.zeros_like(obs_sequence)
+        goal[:] = goal_
+        
         if  (goal_idx - idx) < self.pred_horizon:
             action_sequence = torch.zeros((self.pred_horizon, self.action_dim))
             action_sequence[: (goal_idx - idx)] = self.action[idx: goal_idx]
@@ -128,7 +130,6 @@ class CustomDataset_Shared(Dataset):
                 for i in range(start, start + pad_size):
                     action_sequence[i, :] =  self.action[goal_idx-1]
                     
-        print("action_start, goal_idx, end: ", idx, goal_idx, len(action_sequence))
         return {'obs': obs_sequence, 'action': action_sequence, 'goal': goal}
 
     # def __getitem__(self, idx):

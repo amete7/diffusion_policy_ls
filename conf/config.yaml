@@ -1,8 +1,9 @@
 paths:
   dataset_folder_path: /satassdscratch/scml-shared/calvin_data/task_D_D/training
   stats_file_path: /satassdscratch/scml-shared/calvin_data/task_D_D/stats.npz
-  processed_dataste_path: /satassdscratch/scml-shared/calvin_data/task_D_D/samples.npz
+  processed_dataste_path: /Users/shivikasingh/Desktop/shivika/ML-LS/diffusion_policy_ls/data/samples.npz
   model_weights_path: /satassdscratch/scml-shared/calvin_data/task_D_D/ema_noise_pred_net.pth
+  goal_filepath: /Users/shivikasingh/Desktop/shivika/ML-LS/diffusion_policy_ls/data/keypoints.npz
 
 params:
   pred_horizon: 16
