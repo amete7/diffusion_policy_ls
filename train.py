@@ -18,7 +18,7 @@ def main(cfg):
     if cfg.train.wandb:
         wandb.init(
             project=cfg.train.project_name,
-            name='task_D_calvin_low_dim_check',
+            name='task_D_calvin_low_dim_nor_action_only',
         )
     device = torch.device('cuda')
 
@@ -54,12 +54,13 @@ def main(cfg):
     dataloader = torch.utils.data.DataLoader(
         custom_dataset,
         batch_size=256,
-        num_workers=1,
-        shuffle=False,
+        num_workers=4,
+        shuffle=True,
         # accelerate cpu-gpu transfer
         pin_memory=True,
         # don't kill worker process afte each epoch
-        persistent_workers=True
+        persistent_workers=True,
+        prefetch_factor=2
     )
     print('dataloader_loaded')
     # batch = next(iter(dataloader))
@@ -113,8 +114,8 @@ def main(cfg):
                 for nbatch in tepoch:
                     # data normalized in dataset
                     # device transfer
-                    nobs = nbatch['obs'].to(device)
-                    naction = nbatch['action'].to(device)
+                    nobs = nbatch['obs'].to(device, dtype=torch.float)
+                    naction = nbatch['action'].to(device, dtype=torch.float)
                     B = nobs.shape[0]
 
                     # observation as FiLM conditioning

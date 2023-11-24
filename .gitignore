@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+#directories
+outputs/
+
+# Virtual Environments
+venv/
+env/
+.venv/
+.env/
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled source
+__pycache__/
+*.pyc
+*.pyo
+
+# Others
+*.DS_Store
+Thumbs.db
+*.bak
+*.swp

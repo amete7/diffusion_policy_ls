@@ -16,10 +16,10 @@ def get_data_stats(data):
     return stats
 
 def main():
-    stats_file_path = "/satassdscratch/scml-shared/calvin_data/task_D_D/stats.npz"
+    stats_file_path = "data/stats_actions.npz"
     data = np.load(stats_file_path,allow_pickle=True)
-    min_obs = data['min_obs']
-    max_obs = data['max_obs']
+    # min_obs = data['min_obs']
+    # max_obs = data['max_obs']
     min_action = data['min_action']
     max_action = data['max_action']
     # Define arguments for creating a DiskDataset instance
@@ -86,9 +86,11 @@ def main():
         sequence = dataset[idx, max_window_size]
         obs = sequence['robot_obs']
         action = sequence['actions']
+        # print(obs,action)
         # print(time.time(),'loaded_obs_action')
-        obs = 2 * (obs - min_obs) / (max_obs - min_obs) - 1
+        # obs = 2 * (obs - min_obs) / (max_obs - min_obs) - 1
         action = 2 * (action - min_action) / (max_action - min_action) - 1
+        # print(obs,action,'normalizedddd')
         # print(obs.shape,'obs_shape')
         # print(action.shape,'action_shape')
         # obs, action = normalize_data(obs,action)
@@ -103,10 +105,10 @@ def main():
     # print(stats)
     observations = np.array(observations)
     actions = np.array(actions)
-    print(observations)
+    # print(observations)
     data = {'obs':observations, 'action': actions}
     # np.savez('/satassdscratch/scml-shared/calvin_data/calvin_debug_dataset/n_sample.npz', **nsample)
-    np.savez('/satassdscratch/scml-shared/calvin_data/task_D_D/samples.npz', **data)
+    np.savez('/satassdscratch/scml-shared/calvin_data/task_D_D/samples_naction.npz', **data)
     # print(n_obs.shape)
         # Get the length of the dataset
     print(cnt,'num_iter')

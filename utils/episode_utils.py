@@ -40,7 +40,7 @@ def process_state(
         state_obs_list_unnormalized.append(state_tensor)
     seq_state_obs = torch.cat(state_obs_list_normalized, dim=1)
     seq_state_obs_unnormalized = torch.cat(state_obs_list_unnormalized, dim=1)
-    # print(proprio_state,'pro_utils')
+    # print(torch.equal(seq_state_obs,seq_state_obs_unnormalized),'pro_utils')
     if not proprio_state.normalize_robot_orientation and "robot_orientation_idx" in proprio_state:
         seq_state_obs[:, slice(*proprio_state.robot_orientation_idx)] = seq_state_obs_unnormalized[
             :, slice(*proprio_state.robot_orientation_idx)
