@@ -6,7 +6,7 @@ __pycache__/
 
 #directories
 outputs/
-
+data/
 # Virtual Environments
 venv/
 env/
