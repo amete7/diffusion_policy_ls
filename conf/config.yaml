@@ -15,7 +15,7 @@ params:
 train:
   batch_size: 256
   num_epochs: 320
-  save_interval: 10
+  save_interval: 5
   lr: 1e-4
   wandb: True
   project_name: MLLS_diffplay
