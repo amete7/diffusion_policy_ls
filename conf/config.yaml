@@ -5,7 +5,7 @@ paths:
   model_weights_path: /satassdscratch/scml-shared/calvin_data/task_D_D/ema_noise_pred_net_nor_action.pth
 
 params:
-  pred_horizon: 16
+  pred_horizon: 32
   obs_horizon: 2
   action_horizon: 8
   obs_dim: 39
@@ -14,8 +14,8 @@ params:
 
 train:
   batch_size: 256
-  num_epochs: 320
-  save_interval: 5
+  num_epochs: 101
+  save_interval: 10
   lr: 1e-4
   wandb: True
   project_name: MLLS_diffplay

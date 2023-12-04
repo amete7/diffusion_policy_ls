@@ -18,7 +18,7 @@ def main(cfg):
     if cfg.train.wandb:
         wandb.init(
             project=cfg.train.project_name,
-            name='unconditional_diffusion_na',
+            name='unconditional_diffusion_na_H32',
         )
     device = torch.device('cuda')
 
@@ -167,7 +167,7 @@ def main(cfg):
             if (epoch_idx+1) % save_interval == 0:
                 print('saving checkpoint')
                 ema_noise_pred_net = ema.averaged_model
-                model_weights_path = '/satassdscratch/scml-shared/calvin_data/task_D_D/uncnd_naction_epoch{}.pth'.format(epoch_idx)
+                model_weights_path = '/satassdscratch/scml-shared/calvin_data/task_D_D/uncnd_H32_naction_epoch{}.pth'.format(epoch_idx)
                 torch.save(ema_noise_pred_net.state_dict(), model_weights_path)
 
     # Weights of the EMA model
